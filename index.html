@@ -3,46 +3,328 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Hello World</title>
+  <title>Al Arabiya Breaking News – RSS Feed</title>
   <style>
+    :root {
+      color-scheme: light;
+      --bg: #f4f7fb;
+      --card: #ffffff;
+      --accent: #e63946;
+      --text: #1f2933;
+      --muted: #5f6c7b;
+      --border: #e0e7f1;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
     body {
-      display: flex;
+      margin: 0;
       min-height: 100vh;
-      align-items: center;
+      display: flex;
       justify-content: center;
+      background: radial-gradient(circle at 10% 20%, #f6d5f7 0, #f4f7fb 25%),
+        radial-gradient(circle at 90% 10%, #c9e4ff 0, #f4f7fb 20%),
+        linear-gradient(135deg, #f4f7fb 0%, #eef2f7 100%);
+      font-family: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+      color: var(--text);
+      padding: 32px 16px 48px;
+    }
+
+    main {
+      width: min(960px, 100%);
+      background: var(--card);
+      border-radius: 18px;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+      border: 1px solid var(--border);
+      overflow: hidden;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(135deg, rgba(230, 57, 70, 0.08), transparent);
+    }
+
+    header .logo {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      background: var(--accent);
+      display: grid;
+      place-items: center;
+      color: #fff;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      font-size: 18px;
+    }
+
+    header h1 {
       margin: 0;
-      background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
-      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-      color: #1f2933;
+      font-size: 1.4rem;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
     }
 
-    .card {
-      background-color: #ffffff;
-      padding: 32px 40px;
-      border-radius: 16px;
-      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
-      text-align: center;
-      max-width: 420px;
-      border: 1px solid rgba(255, 255, 255, 0.6);
-      backdrop-filter: blur(10px);
+    header h1 span {
+      color: var(--muted);
+      font-size: 0.95rem;
+      font-weight: 500;
     }
 
-    .card h1 {
-      margin: 0 0 12px;
-      font-size: 2.5rem;
+    .meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 24px;
+      border-bottom: 1px solid var(--border);
+      background-color: #fafbff;
+      color: var(--muted);
+      font-size: 0.95rem;
+      flex-wrap: wrap;
     }
 
-    .card p {
-      margin: 0;
+    .status-dot {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--accent);
+      margin-right: 6px;
+      box-shadow: 0 0 0 6px rgba(230, 57, 70, 0.12);
+    }
+
+    .actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    button {
+      border: 1px solid var(--border);
+      background: #ffffff;
+      color: var(--text);
+      padding: 8px 14px;
+      border-radius: 10px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
+    }
+
+    button:active {
+      transform: translateY(0);
+      box-shadow: none;
+    }
+
+    .feed {
+      padding: 20px 24px 28px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .item {
+      padding: 16px 18px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: #ffffff;
+      display: grid;
+      gap: 8px;
+      transition: border-color 0.2s ease, transform 0.2s ease;
+    }
+
+    .item:hover {
+      border-color: #d0d9e6;
+      transform: translateY(-1px);
+    }
+
+    .item a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 700;
       font-size: 1.05rem;
-      color: #52616b;
+      line-height: 1.4;
+    }
+
+    .item a:hover {
+      text-decoration: underline;
+    }
+
+    .item .details {
+      color: var(--muted);
+      font-size: 0.95rem;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(230, 57, 70, 0.1);
+      color: var(--accent);
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+      text-transform: uppercase;
+      font-size: 0.75rem;
+    }
+
+    .loader,
+    .error {
+      padding: 24px;
+      text-align: center;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    @media (max-width: 640px) {
+      header,
+      .meta {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .actions {
+        width: 100%;
+        justify-content: space-between;
+      }
+
+      .item {
+        padding: 14px 16px;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="card">
-    <h1>Hello, World!</h1>
-    <p>Welcome to a simple, elegant HTML page.</p>
-  </div>
+  <main>
+    <header>
+      <div class="logo" aria-hidden="true">AA</div>
+      <h1>
+        Al Arabiya Breaking News
+        <span>Latest headlines from the RSS feed</span>
+      </h1>
+    </header>
+
+    <div class="meta">
+      <div><span class="status-dot" aria-hidden="true"></span><strong id="status-text">Loading feed…</strong></div>
+      <div class="actions">
+        <button type="button" id="refresh-btn">Refresh now</button>
+        <span id="last-updated">—</span>
+      </div>
+    </div>
+
+    <div id="loader" class="loader" role="status">Fetching RSS items…</div>
+    <div id="error" class="error hidden" role="alert"></div>
+    <section id="feed" class="feed" aria-live="polite"></section>
+  </main>
+
+  <script>
+    const FEED_URL = encodeURIComponent("https://www.alarabiya.net/.mrss/en/breaking-news.xml");
+    const PROXY = `https://api.rss2json.com/v1/api.json?rss_url=${FEED_URL}`;
+
+    const feedEl = document.getElementById("feed");
+    const loaderEl = document.getElementById("loader");
+    const errorEl = document.getElementById("error");
+    const statusText = document.getElementById("status-text");
+    const lastUpdatedEl = document.getElementById("last-updated");
+    const refreshBtn = document.getElementById("refresh-btn");
+
+    async function loadFeed() {
+      setStatus("Loading feed…");
+      toggleState({ loading: true, error: "" });
+
+      try {
+        const response = await fetch(PROXY);
+        if (!response.ok) {
+          throw new Error(`Feed request failed (${response.status})`);
+        }
+
+        const data = await response.json();
+        const items = data?.items || [];
+
+        if (!items.length) {
+          throw new Error("No items found in the RSS feed.");
+        }
+
+        renderItems(items);
+        const updated = new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+        lastUpdatedEl.textContent = `Updated at ${updated}`;
+        setStatus("Live");
+        toggleState({ loading: false, error: "" });
+      } catch (err) {
+        const message =
+          "Could not load the RSS feed. This demo uses a public RSS-to-JSON proxy, " +
+          "which may be blocked by your network or the source. Please retry or replace the proxy URL.";
+        toggleState({ loading: false, error: message });
+        console.error(err);
+      }
+    }
+
+    function renderItems(items) {
+      feedEl.innerHTML = "";
+      const fragment = document.createDocumentFragment();
+
+      items.forEach((item) => {
+        const article = document.createElement("article");
+        article.className = "item";
+
+        const title = document.createElement("a");
+        title.href = item.link;
+        title.target = "_blank";
+        title.rel = "noopener noreferrer";
+        title.textContent = item.title;
+
+        const details = document.createElement("div");
+        details.className = "details";
+        const date = new Date(item.pubDate);
+        details.textContent = `${isNaN(date) ? "" : date.toLocaleString()}${item.author ? " · " + item.author : ""}`;
+
+        const badge = document.createElement("span");
+        badge.className = "badge";
+        badge.textContent = "Breaking";
+
+        article.append(title, details, badge);
+        fragment.appendChild(article);
+      });
+
+      feedEl.appendChild(fragment);
+    }
+
+    function toggleState({ loading, error }) {
+      loaderEl.classList.toggle("hidden", !loading);
+      errorEl.classList.toggle("hidden", !error);
+
+      if (error) {
+        errorEl.textContent = error;
+        statusText.textContent = "Feed unavailable";
+      }
+    }
+
+    function setStatus(text) {
+      statusText.textContent = text;
+    }
+
+    refreshBtn.addEventListener("click", () => loadFeed());
+
+    loadFeed();
+  </script>
 </body>
 </html>
