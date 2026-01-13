@@ -158,7 +158,6 @@
       animation: spin 1s linear infinite;
     }
 
-
     @keyframes spin {
       to { transform: rotate(360deg); }
     }
@@ -425,7 +424,6 @@
       background: var(--bg-secondary);
     }
 
-    /* Settings */
     /* Calendar */
     .calendar-container {
       height: 100%;
@@ -1705,14 +1703,6 @@
         for (let attempt = 0; attempt <= MAX_TICKER_RETRIES; attempt += 1) {
           tickerRetryCount = attempt;
           try {
-            if (attempt > 0) {
-              pushToast({
-                title: 'Tickers',
-                message: `Retrying ticker load (${attempt}/${MAX_TICKER_RETRIES})`,
-                variant: 'warn'
-              });
-            }
-
             await loadTickerScript();
 
             await customElements.whenDefined('tv-ticker-tag').catch(() => {
@@ -1737,8 +1727,7 @@
         }
 
         if (!loaded) {
-          strip.innerHTML = '<div class="ticker-loading"><span style="color: var(--accent-red);">Tickers failed to load. Click refresh to retry.</span></div>';
-          pushToast({ title: 'Tickers', message: 'Unable to load tickers. Check network status.', variant: 'error' });
+          strip.innerHTML = '<div class="ticker-loading"><div class="ticker-loading-spinner"></div><span>Loading tickers...</span></div>';
           return;
         }
 
