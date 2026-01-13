@@ -425,95 +425,6 @@
     }
 
     /* Settings */
-    .settings-wrap {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      padding: 16px;
-      overflow-y: auto;
-      height: 100%;
-    }
-
-    .settings-section {
-      border: 1px solid var(--border-color);
-      background: var(--bg-tertiary);
-      border-radius: 10px;
-      padding: 12px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .settings-title {
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--text-primary);
-    }
-
-    .settings-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      font-size: 12px;
-      color: var(--text-secondary);
-    }
-
-    .settings-row small { color: var(--text-muted); }
-
-    .toggle {
-      position: relative;
-      width: 42px;
-      height: 22px;
-      background: var(--bg-secondary);
-      border: 1px solid var(--border-color);
-      border-radius: 999px;
-      transition: background var(--anim), border-color var(--anim);
-      cursor: pointer;
-    }
-
-    .toggle input {
-      opacity: 0;
-      width: 0;
-      height: 0;
-    }
-
-    .toggle::after {
-      content: '';
-      position: absolute;
-      top: 2px;
-      left: 2px;
-      width: 16px;
-      height: 16px;
-      border-radius: 50%;
-      background: var(--text-muted);
-      transition: transform var(--anim), background var(--anim);
-    }
-
-    .toggle.on {
-      background: rgba(59, 130, 246, 0.2);
-      border-color: var(--accent-blue);
-    }
-
-    .toggle.on::after {
-      transform: translateX(20px);
-      background: var(--accent-blue);
-    }
-
-    .range {
-      width: 160px;
-    }
-
-    .settings-badge {
-      background: var(--bg-secondary);
-      border: 1px solid var(--border-color);
-      border-radius: 999px;
-      padding: 2px 8px;
-      font-size: 11px;
-      color: var(--text-secondary);
-      font-weight: 600;
-    }
-
     /* Calendar */
     .calendar-container {
       height: 100%;
@@ -837,7 +748,7 @@
 
     .help-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
       gap: 12px;
       padding: 16px;
       overflow: auto;
@@ -850,11 +761,40 @@
       background: var(--bg-tertiary);
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 10px;
     }
 
     .help-card h4 { font-size: 13px; }
-    .help-card span { font-size: 12px; color: var(--text-muted); }
+
+    .help-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .help-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .help-key {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 30px;
+      padding: 2px 6px;
+      border-radius: 6px;
+      border: 1px solid var(--border-color);
+      background: var(--bg-secondary);
+      color: var(--text-primary);
+      font-weight: 600;
+      font-size: 11px;
+      letter-spacing: 0.3px;
+    }
 
     /* Toasts */
     .toast-container {
@@ -1285,14 +1225,6 @@
         <div class="dock-tooltip">Theme</div>
       </button>
 
-      <button class="dock-btn" data-panel="settings" title="Settings" aria-label="Open settings panel">
-        <svg class="icon" viewBox="0 0 24 24">
-          <path d="M12 15.5A3.5 3.5 0 1 0 12 8.5a3.5 3.5 0 0 0 0 7z"/>
-          <path d="M19.4 15a1 1 0 0 0 .2 1.1l.1.1a2 2 0 0 1-2.8 2.8l-.1-.1a1 1 0 0 0-1.1-.2 1 1 0 0 0-.6.9V21a2 2 0 0 1-4 0v-.1a1 1 0 0 0-.6-.9 1 1 0 0 0-1.1.2l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1 1 0 0 0 .2-1.1 1 1 0 0 0-.9-.6H3a2 2 0 0 1 0-4h.1a1 1 0 0 0 .9-.6 1 1 0 0 0-.2-1.1l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1 1 0 0 0 1.1.2 1 1 0 0 0 .6-.9V3a2 2 0 0 1 4 0v.1a1 1 0 0 0 .6.9 1 1 0 0 0 1.1-.2l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1 1 0 0 0-.2 1.1 1 1 0 0 0 .9.6H21a2 2 0 0 1 0 4h-.1a1 1 0 0 0-.9.6z"/>
-        </svg>
-        <div class="dock-tooltip">Settings</div>
-      </button>
-
       <div class="dock-sep"></div>
 
       <button class="dock-btn" data-panel="calendar" title="Calendar" aria-label="Open calendar panel">
@@ -1397,20 +1329,25 @@
       <div class="modal-body">
         <div class="help-grid">
           <div class="help-card">
-            <h4>Theme</h4>
-            <span>Press <strong>T</strong> to toggle theme.</span>
-          </div>
-          <div class="help-card">
             <h4>Panels</h4>
-            <span><strong>C</strong> Calendar · <strong>N</strong> News · <strong>H</strong> Heatmap · <strong>S</strong> Settings</span>
+            <div class="help-list">
+              <div class="help-item"><span class="help-key">C</span><span>Calendar panel</span></div>
+              <div class="help-item"><span class="help-key">N</span><span>News panel</span></div>
+              <div class="help-item"><span class="help-key">H</span><span>Heatmap panel</span></div>
+            </div>
           </div>
           <div class="help-card">
-            <h4>Modals</h4>
-            <span><strong>Esc</strong> closes modals and panel.</span>
+            <h4>Theme & Help</h4>
+            <div class="help-list">
+              <div class="help-item"><span class="help-key">T</span><span>Toggle theme</span></div>
+              <div class="help-item"><span class="help-key">?</span><span>Open help</span></div>
+            </div>
           </div>
           <div class="help-card">
-            <h4>Help</h4>
-            <span>Press <strong>?</strong> to open this guide.</span>
+            <h4>Close</h4>
+            <div class="help-list">
+              <div class="help-item"><span class="help-key">Esc</span><span>Close panel & modals</span></div>
+            </div>
           </div>
         </div>
       </div>
@@ -1761,63 +1698,50 @@
         const strip = $('#tickerStrip');
         if (!strip || !tickersEnabled) return;
 
-        try {
-          // Show loading state
-          strip.innerHTML = '<div class="ticker-loading"><div class="ticker-loading-spinner"></div><span>Loading tickers...</span></div>';
+        strip.innerHTML = '<div class="ticker-loading"><div class="ticker-loading-spinner"></div><span>Loading tickers...</span></div>';
 
-          // Load the script first
-          await loadTickerScript();
+        let loaded = false;
+        for (let attempt = 0; attempt <= MAX_TICKER_RETRIES; attempt += 1) {
+          tickerRetryCount = attempt;
+          try {
+            if (attempt > 0) {
+              pushToast({
+                title: 'Tickers',
+                message: `Retrying ticker load (${attempt}/${MAX_TICKER_RETRIES})`,
+                variant: 'warn'
+              });
+            }
 
-          // Wait for custom element to be defined
-          await customElements.whenDefined('tv-ticker-tag').catch(() => {
-            return new Promise(resolve => setTimeout(resolve, 1000));
-          });
+            await loadTickerScript();
 
-          // Create the ticker tags
-          createTickerTags();
-
-          // Wait and check if loaded
-          await new Promise(resolve => setTimeout(resolve, 2000));
-
-          // Verify tickers loaded
-          const loaded = checkTickersLoaded();
-
-          if (!loaded && tickerRetryCount < MAX_TICKER_RETRIES) {
-            tickerRetryCount++;
-            pushToast({
-              title: 'Tickers',
-              message: `Retrying ticker load (${tickerRetryCount}/${MAX_TICKER_RETRIES})`,
-              variant: 'warn'
+            await customElements.whenDefined('tv-ticker-tag').catch(() => {
+              return new Promise(resolve => setTimeout(resolve, 1000));
             });
 
-            // Reset and retry
-            tickerScriptLoaded = false;
-            tickerScriptLoading = false;
+            createTickerTags();
 
-            // Remove old script
-            const oldScript = document.querySelector('script[src*="tv-ticker-tag.js"]');
-            if (oldScript) oldScript.remove();
-
-            // Wait before retry
-            await new Promise(resolve => setTimeout(resolve, 1000));
-            return initTickers();
-          }
-
-          // Start auto-fit after tickers are ready
-          startTickerAutoFit();
-        } catch (err) {
-          if (tickerRetryCount < MAX_TICKER_RETRIES) {
-            tickerRetryCount++;
-            tickerScriptLoaded = false;
-            tickerScriptLoading = false;
             await new Promise(resolve => setTimeout(resolve, 2000));
-            return initTickers();
+            loaded = checkTickersLoaded();
+
+            if (loaded) break;
+          } catch {
+            loaded = false;
           }
 
-          // Show error state
-          strip.innerHTML = '<div class="ticker-loading"><span style="color: var(--accent-red);">Failed to load tickers. Click refresh to retry.</span></div>';
-          pushToast({ title: 'Tickers', message: 'Unable to load tickers. Check network status.', variant: 'error' });
+          tickerScriptLoaded = false;
+          tickerScriptLoading = false;
+          const oldScript = document.querySelector('script[src*="tv-ticker-tag.js"]');
+          if (oldScript) oldScript.remove();
+          await new Promise(resolve => setTimeout(resolve, 1000));
         }
+
+        if (!loaded) {
+          strip.innerHTML = '<div class="ticker-loading"><span style="color: var(--accent-red);">Tickers failed to load. Click refresh to retry.</span></div>';
+          pushToast({ title: 'Tickers', message: 'Unable to load tickers. Check network status.', variant: 'error' });
+          return;
+        }
+
+        startTickerAutoFit();
       }
 
       function reinitTickers() {
@@ -1999,88 +1923,6 @@
               <div id="heatmapWidget"></div>
             </div>
           `
-        },
-        settings: {
-          title: 'Settings',
-          icon: '<svg class="icon" viewBox="0 0 24 24"><path d="M12 15.5A3.5 3.5 0 1 0 12 8.5a3.5 3.5 0 0 0 0 7z"/><path d="M19.4 15a1 1 0 0 0 .2 1.1l.1.1a2 2 0 0 1-2.8 2.8l-.1-.1a1 1 0 0 0-1.1-.2 1 1 0 0 0-.6.9V21a2 2 0 0 1-4 0v-.1a1 1 0 0 0-.6-.9 1 1 0 0 0-1.1.2l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1 1 0 0 0 .2-1.1 1 1 0 0 0-.9-.6H3a2 2 0 0 1 0-4h.1a1 1 0 0 0 .9-.6 1 1 0 0 0-.2-1.1l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1 1 0 0 0 1.1.2 1 1 0 0 0 .6-.9V3a2 2 0 0 1 4 0v.1a1 1 0 0 0 .6.9 1 1 0 0 0 1.1-.2l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1 1 0 0 0-.2 1.1 1 1 0 0 0 .9.6H21a2 2 0 0 1 0 4h-.1a1 1 0 0 0-.9.6z"/></svg>',
-          html: `
-            <div class="settings-wrap">
-              <div class="settings-section">
-                <div class="settings-title">Layout & Motion</div>
-                <div class="settings-row">
-                  <div>
-                    Compact density<br/><small>Reduce padding & spacing</small>
-                  </div>
-                  <label class="toggle" id="toggleDensity">
-                    <input type="checkbox" />
-                  </label>
-                </div>
-                <div class="settings-row">
-                  <div>
-                    Hide watermarks<br/><small>Remove chart labels</small>
-                  </div>
-                  <label class="toggle" id="toggleWatermarks">
-                    <input type="checkbox" />
-                  </label>
-                </div>
-                <div class="settings-row">
-                  <div>
-                    Reduce motion<br/><small>Disable animations</small>
-                  </div>
-                  <label class="toggle" id="toggleMotion">
-                    <input type="checkbox" />
-                  </label>
-                </div>
-              </div>
-
-              <div class="settings-section">
-                <div class="settings-title">Ticker & News</div>
-                <div class="settings-row">
-                  <div>
-                    Auto-fit tickers<br/><small>Scale to fit top bar</small>
-                  </div>
-                  <label class="toggle" id="toggleTickerFit">
-                    <input type="checkbox" />
-                  </label>
-                </div>
-                <div class="settings-row">
-                  <div>
-                    Auto-refresh news<br/><small>Refresh headlines on a timer</small>
-                  </div>
-                  <label class="toggle" id="toggleNewsAuto">
-                    <input type="checkbox" />
-                  </label>
-                </div>
-                <div class="settings-row">
-                  <div>
-                    News refresh interval
-                  </div>
-                  <div style="display:flex;align-items:center;gap:10px;">
-                    <input id="newsInterval" class="range" type="range" min="30" max="300" step="30" />
-                    <span class="settings-badge" id="newsIntervalLabel">60s</span>
-                  </div>
-                </div>
-              </div>
-
-              <div class="settings-section">
-                <div class="settings-title">Startup</div>
-                <div class="settings-row">
-                  <div>
-                    Skip preloader<br/><small>Jump straight into dashboard</small>
-                  </div>
-                  <label class="toggle" id="togglePreloader">
-                    <input type="checkbox" />
-                  </label>
-                </div>
-                <div class="settings-row">
-                  <div>
-                    Remember last panel<br/><small>Restore on reload</small>
-                  </div>
-                  <span class="settings-badge" id="rememberedPanel">Off</span>
-                </div>
-              </div>
-            </div>
-          `
         }
       };
 
@@ -2122,7 +1964,6 @@
         if (key === 'news') initNewsPanel();
         if (key === 'calendar') initCalendarPanel();
         if (key === 'heatmap') initHeatmapPanel();
-        if (key === 'settings') initSettingsPanel();
       }
 
       /* ===================== Panel Side-Effect Cleanup ===================== */
@@ -2200,99 +2041,6 @@
         if (closeBtn) closeBtn.addEventListener('click', closePanel);
 
         updateThemeIcon();
-      }
-
-      /* ===================== Settings Panel ===================== */
-      function initSettingsPanel() {
-        const densityToggle = $('#toggleDensity');
-        const watermarkToggle = $('#toggleWatermarks');
-        const motionToggle = $('#toggleMotion');
-        const tickerFitToggle = $('#toggleTickerFit');
-        const newsAutoToggle = $('#toggleNewsAuto');
-        const newsInterval = $('#newsInterval');
-        const newsIntervalLabel = $('#newsIntervalLabel');
-        const preloaderToggle = $('#togglePreloader');
-        const rememberedPanel = $('#rememberedPanel');
-
-        const setToggleState = (el, state) => {
-          if (!el) return;
-          el.classList.toggle('on', state);
-          const input = el.querySelector('input');
-          if (input) input.checked = state;
-        };
-
-        setToggleState(densityToggle, document.body.dataset.density === 'compact');
-        setToggleState(watermarkToggle, document.body.dataset.watermarks === 'off');
-        setToggleState(motionToggle, document.body.classList.contains('reduce-motion'));
-        setToggleState(tickerFitToggle, getPreference('tickerFit', true));
-        setToggleState(newsAutoToggle, getPreference('newsAuto', true));
-        setToggleState(preloaderToggle, getPreference('skipPreloader', false));
-
-        if (newsInterval) {
-          const intervalVal = getPreference('newsInterval', 60);
-          newsInterval.value = String(intervalVal);
-          if (newsIntervalLabel) newsIntervalLabel.textContent = `${intervalVal}s`;
-        }
-
-        if (rememberedPanel) {
-          const panelName = getPreference('lastPanel', '');
-          rememberedPanel.textContent = panelName ? `On (${panelName})` : 'Off';
-        }
-
-        densityToggle?.addEventListener('click', () => {
-          const isCompact = document.body.dataset.density === 'compact';
-          document.body.dataset.density = isCompact ? 'comfortable' : 'compact';
-          setPreference('density', document.body.dataset.density);
-          setToggleState(densityToggle, !isCompact);
-        });
-
-        watermarkToggle?.addEventListener('click', () => {
-          const isOff = document.body.dataset.watermarks === 'off';
-          document.body.dataset.watermarks = isOff ? 'on' : 'off';
-          setPreference('watermarks', document.body.dataset.watermarks);
-          setToggleState(watermarkToggle, !isOff);
-        });
-
-        motionToggle?.addEventListener('click', () => {
-          document.body.classList.toggle('reduce-motion');
-          const isOn = document.body.classList.contains('reduce-motion');
-          setPreference('reduceMotion', isOn);
-          setToggleState(motionToggle, isOn);
-        });
-
-        tickerFitToggle?.addEventListener('click', () => {
-          const next = !getPreference('tickerFit', true);
-          setPreference('tickerFit', next);
-          setToggleState(tickerFitToggle, next);
-          if (next) startTickerAutoFit();
-        });
-
-        newsAutoToggle?.addEventListener('click', () => {
-          const next = !getPreference('newsAuto', true);
-          setPreference('newsAuto', next);
-          setToggleState(newsAutoToggle, next);
-          if (next) {
-            scheduleNewsRefresh();
-          } else if (newsIntervalId) {
-            clearInterval(newsIntervalId);
-            newsIntervalId = 0;
-          }
-        });
-
-        newsInterval?.addEventListener('input', (e) => {
-          const value = Number(e.target.value);
-          if (newsIntervalLabel) newsIntervalLabel.textContent = `${value}s`;
-          setPreference('newsInterval', value);
-          if (getPreference('newsAuto', true)) {
-            scheduleNewsRefresh(true);
-          }
-        });
-
-        preloaderToggle?.addEventListener('click', () => {
-          const next = !getPreference('skipPreloader', false);
-          setPreference('skipPreloader', next);
-          setToggleState(preloaderToggle, next);
-        });
       }
 
       /* ===================== Calendar panel ===================== */
@@ -2812,9 +2560,6 @@
               break;
             case 'h':
               openPanel('heatmap');
-              break;
-            case 's':
-              openPanel('settings');
               break;
             case 't':
               toggleTheme();
