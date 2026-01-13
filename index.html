@@ -158,46 +158,6 @@
       animation: spin 1s linear infinite;
     }
 
-    .topbar-status {
-      position: absolute;
-      right: calc(var(--dock-w) + 10px);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 11px;
-      color: var(--text-muted);
-    }
-
-    .status-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 2px 8px;
-      border-radius: 999px;
-      border: 1px solid var(--border-color);
-      background: var(--bg-secondary);
-      line-height: 1;
-      font-weight: 600;
-      letter-spacing: 0.2px;
-    }
-
-    .status-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 999px;
-      background: var(--accent-green);
-      box-shadow: 0 0 6px rgba(16, 185, 129, 0.8);
-    }
-
-    .status-pill.offline .status-dot {
-      background: var(--accent-red);
-      box-shadow: 0 0 6px rgba(239, 68, 68, 0.8);
-    }
-
-    .status-pill.warning .status-dot {
-      background: var(--accent-yellow);
-      box-shadow: 0 0 6px rgba(245, 158, 11, 0.8);
-    }
 
     @keyframes spin {
       to { transform: rotate(360deg); }
@@ -942,7 +902,6 @@
       main { right: 36px; }
       .panel { width: 85%; right: 36px; }
       .topbar { padding-right: 36px; }
-      .topbar-status { display: none; }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -1311,16 +1270,6 @@
           <div class="ticker-loading-spinner"></div>
           <span>Loading tickers...</span>
         </div>
-      </div>
-    </div>
-    <div class="topbar-status" aria-live="polite">
-      <div class="status-pill" id="networkStatus">
-        <span class="status-dot"></span>
-        <span id="networkText">Online</span>
-      </div>
-      <div class="status-pill" id="clockStatus">
-        <span class="status-dot"></span>
-        <span id="topClock">--:--</span>
       </div>
     </div>
   </div>
@@ -2964,27 +2913,6 @@
         main.scrollTo({ top: Math.max(0, targetTop - 6), behavior: 'smooth' });
       }
 
-      /* ===================== Status Indicators ===================== */
-      function updateNetworkStatus() {
-        const status = $('#networkStatus');
-        const text = $('#networkText');
-        if (!status || !text) return;
-        const online = navigator.onLine !== false;
-        status.classList.toggle('offline', !online);
-        status.classList.toggle('warning', online && tickerRetryCount > 0);
-        text.textContent = online ? 'Online' : 'Offline';
-      }
-
-      function startClock() {
-        const topClock = $('#topClock');
-        if (!topClock) return;
-        const update = () => {
-          topClock.textContent = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
-        };
-        update();
-        setInterval(update, 1000 * 30);
-      }
-
       /* ===================== Preferences ===================== */
       function applyPreferences() {
         const density = getPreference('density', 'comfortable');
@@ -3015,17 +2943,12 @@
         generateChartGrid();
 
         initTickers();
-        updateNetworkStatus();
-        startClock();
-
         window.addEventListener('online', () => {
-          updateNetworkStatus();
           pushToast({ title: 'Network', message: 'Back online.', variant: 'success' });
           reinitTickers();
         });
 
         window.addEventListener('offline', () => {
-          updateNetworkStatus();
           pushToast({ title: 'Network', message: 'You are offline.', variant: 'warn' });
         });
 
@@ -3037,7 +2960,6 @@
         document.addEventListener('visibilitychange', () => {
           if (!document.hidden) {
             startTickerAutoFit();
-            updateNetworkStatus();
             const strip = $('#tickerStrip');
             if (strip && !strip.querySelector('tv-ticker-tag')) {
               reinitTickers();
