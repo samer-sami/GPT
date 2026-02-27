@@ -2,13 +2,13 @@
 
 echo "🚀 Booting up OpenClaw..."
 
-# 1. Clean up any stuck processes from a previous session
+# 1. Clean up any stuck processes
 pkill -f "openclaw gateway" || true
 pkill -f "openclaw telegram" || true
 
-# 2. Start the Gateway securely in the background
-echo "Starting Gateway on port 18789..."
-nohup openclaw gateway start --host 0.0.0.0 --auto-approve > gateway.log 2>&1 &
+# 2. Start the Gateway securely in the background (Removed the invalid --host flag)
+echo "Starting Gateway..."
+nohup openclaw gateway start --auto-approve > gateway.log 2>&1 &
 
 # Give the Gateway 5 seconds to wake up before connecting Telegram
 sleep 5
