@@ -2,12 +2,12 @@
 
 echo "🚀 Booting up OpenClaw..."
 
-# 1. Kill any stuck processes
-pkill -f openclaw || true
+# 1. Safely kill ONLY the gateway process
+pkill -f "openclaw gateway" || true
 
-# 2. Start the Gateway (This automatically starts Telegram too!)
+# 2. Start the Gateway and allow it to boot without prior config
 echo "Starting Gateway..."
-nohup openclaw gateway --port 18789 > gateway.log 2>&1 &
+nohup openclaw gateway --port 18789 --allow-unconfigured > gateway.log 2>&1 &
 
 echo "Waiting for Gateway to initialize..."
 sleep 5
