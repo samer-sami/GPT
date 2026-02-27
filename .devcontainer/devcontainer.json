@@ -1,0 +1,13 @@
+{
+  "name": "OpenClaw Automated Setup",
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+  "forwardPorts": [18789],
+  "portsAttributes": {
+    "18789": {
+      "label": "OpenClaw Dashboard",
+      "onAutoForward": "openBrowser",
+      "visibility": "public"
+    }
+  },
+  "postStartCommand": "./start_openclaw.sh"
+}
