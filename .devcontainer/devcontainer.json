@@ -1,14 +1,1 @@
-{
-  "name": "OpenClaw Master Setup",
-  "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
-  "forwardPorts": [18789],
-  "portsAttributes": {
-    "18789": {
-      "label": "OpenClaw Dashboard",
-      "onAutoForward": "openBrowser",
-      "visibility": "public"
-    }
-  },
-  "postCreateCommand": "curl -fsSL https://openclaw.ai/install.sh | bash -s -- --install-method git",
-  "postStartCommand": "bash ./start_openclaw.sh"
-}
+"postStartCommand": "bash start_openclaw.sh"
